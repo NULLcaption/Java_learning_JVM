@@ -2,7 +2,7 @@
 
 ​	如图，Java虚拟机一般在Java程序执行的执行的时候将内存分为若干个不同的数据区域，这些区域有不同的用途以及创建和销毁时间。
 
-<img src="C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201019092913335.png" alt="image-20201019092913335" style="zoom: 80%;" />
+<img src="C:\Users\Administrator\Desktop\Learn Plan_A Java\java虚拟机 学习笔记\img\image-20201019092913335.png" alt="image-20201019092913335" style="zoom: 80%;" />
 
 #### 	一、程序计数器
 
@@ -138,17 +138,17 @@ if（！constants-＞tag_at（index）.is_unresolved_klass（））{
 
 ​		2、类型指针；
 
-<img src="C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201019131534204.png" alt="image-20201019131534204" style="zoom: 80%;" />
+<img src="C:\Users\Administrator\Desktop\Learn Plan_A Java\java虚拟机 学习笔记\img\image-20201019131534204.png" alt="image-20201019131534204" style="zoom: 80%;" />
 
 ### 	三、对象的方位定位
 
 ​		通过句柄访问对象，如图所示：
 
-<img src="C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201019131827103.png" alt="image-20201019131827103" style="zoom:80%;" />
+<img src="C:\Users\Administrator\Desktop\Learn Plan_A Java\java虚拟机 学习笔记\img\image-20201019131827103.png" alt="image-20201019131827103" style="zoom:80%;" />
 
 ​		通过指针访问对象，如图书所示：
 
-<img src="C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201019132030467.png" alt="image-20201019132030467" style="zoom:80%;" />
+<img src="C:\Users\Administrator\Desktop\Learn Plan_A Java\java虚拟机 学习笔记\img\image-20201019132030467.png" alt="image-20201019132030467" style="zoom:80%;" />
 
 ## JVM内存分配参数以及实战：OutOfMemoryError异常
 
@@ -303,7 +303,7 @@ at org.fenixsoft.oom.DMOOM.main（DMOOM.java：20）
 
 ​	通过一系列的称为“GC Roots”的对象作为起始点，从这些节点开始向下搜索，搜索所走过的路径称为引用链（Reference  Chain），当一个对象到GC  Roots没有任何引用链相连（用图论的话来说，就是从GC Roots到这个对象不可达）时，则证明此对象是不可用的。
 
-![image-20201023163355577](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201023163355577.png)
+![image-20201023163355577](C:\Users\Administrator\Desktop\Learn Plan_A Java\java虚拟机 学习笔记\img\image-20201023163355577.png)
 
 #### 		可作为GC Roots的对象包括下面几种：
 
@@ -358,11 +358,11 @@ java.lang.ref.PhantomReference;//虚引用
 
 ​	在讨论这个问题时，我们得从GC的基础算法说起，在GC中主要使用的是标记删除算法，所谓的标记删除算法就是在程序运行过程中，如果可以用的内存被耗尽的时候，GC线程就会被处罚并将程序暂停，随后将依旧存活的对象标记一遍，最终将对中没有被标记的对象全部清除，接下来恢复程序运行。如图所示。
 
-<img src="C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201026094443559.png" alt="image-20201026094443559" style="zoom: 50%;" />
+<img src="C:\Users\Administrator\Desktop\Learn Plan_A Java\java虚拟机 学习笔记\img\image-20201026094443559.png" alt="image-20201026094443559" style="zoom: 50%;" />
 
 ​	在标记删除算法中主要使用的是可达性分析算法，遍历所有的GC ROOT，然后将所有GC ROOT可达对象标记为存活对象；清除的没有被标记的对象。这里主要筛选的条件是此对象是否有必要执行finalize（）方法，要是对象没有覆盖finalize（）方法，或者finalize（）方法已经被虚拟机调用过，虚拟机将这两种情况都视为“没有必要执行”。如图所示。
 
-<img src="C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201026093756331.png" alt="image-20201026093756331" style="zoom:80%;" />
+<img src="C:\Users\Administrator\Desktop\Learn Plan_A Java\java虚拟机 学习笔记\img\image-20201026093756331.png" alt="image-20201026093756331" style="zoom:80%;" />
 
 ​	标记删除算法的缺点：
 
@@ -374,18 +374,18 @@ java.lang.ref.PhantomReference;//虚引用
 
 ​	所谓的复制删除算法就是将内存中按照相同的区域划分为大小相等的两块区域，每次只使用其其中的一块，当着一块使用完了，那么就将存活的对象移动到另一块上面，然后在把自己的内存清理一遍，这样每次清理的只有一半的内存空间。在不考虑内存碎片的情况下，只需要移动堆顶指针就能完成内存分配，运行效率高，但是这样的代价就是缩小了原有的内存。如图所示。
 
-<img src="C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201026095555672.png" alt="image-20201026095555672" style="zoom:50%;" />
+<img src="C:\Users\Administrator\Desktop\Learn Plan_A Java\java虚拟机 学习笔记\img\image-20201026095555672.png" alt="image-20201026095555672" style="zoom:50%;" />
 
 ​	现代商业的虚拟机都是采用这种复制删除算法来回收新生代的。新生代中的对象98%是“朝生夕死”的，所以并不需要按照1:1的比例来划分内存空间，而是将内存分为一块较大的Eden空间和两块较小的Survivor空间，每次使用Eden和其中一块Survivor。当回收时，将Eden和Survivor中还存活着的对象一次性地复制到另外一块Survivor空间上，最后清理掉Eden和刚才用过的Survivor空间。HotSpot虚拟机默认Eden和Survivor的大小比例是8:1，也就是每次新生代中可用内存空间为整个新生代容量的90%（80%+10%），只有10%的内存会被“浪费”。当然，98%的对象可回收只是一般场景下的数据，我们没有办法保证每次回收都只有不多于10%的对象存活，当Survivor空间不够用时，需要依赖其他内存（这里
 指老年代）进行分配担保（Handle Promotion）。如图所示：
 
-<img src="C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201026100345557.png" alt="image-20201026100345557" style="zoom: 67%;" />
+<img src="C:\Users\Administrator\Desktop\Learn Plan_A Java\java虚拟机 学习笔记\img\image-20201026100345557.png" alt="image-20201026100345557" style="zoom: 67%;" />
 
 #### 	三、标记整理算法
 
 ​	标记完成对象以后将所有存活的对象整理至内存的另一端，然后清除边界意外的空间。
 
-<img src="C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201026101637672.png" alt="image-20201026101637672" style="zoom:50%;" />
+<img src="C:\Users\Administrator\Desktop\Learn Plan_A Java\java虚拟机 学习笔记\img\image-20201026101637672.png" alt="image-20201026101637672" style="zoom:50%;" />
 
 #### 	四、增量算法
 
@@ -403,11 +403,11 @@ java.lang.ref.PhantomReference;//虚引用
 
 ## 垃圾收集器
 
-<img src="C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201026102648914.png" alt="image-20201026102648914" style="zoom: 67%;" />
+<img src="C:\Users\Administrator\Desktop\Learn Plan_A Java\java虚拟机 学习笔记\img\image-20201026102648914.png" alt="image-20201026102648914" style="zoom: 67%;" />
 
 ### 	一、Serial收集器
 
-​		<img src="C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201026131823376.png" alt="image-20201026131823376" style="zoom: 80%;" />
+​		<img src="C:\Users\Administrator\Desktop\Learn Plan_A Java\java虚拟机 学习笔记\img\image-20201026131823376.png" alt="image-20201026131823376" style="zoom: 80%;" />
 
 ​		新生代串行收集器；
 
@@ -419,7 +419,7 @@ java.lang.ref.PhantomReference;//虚引用
 
 ### 	二、ParNew收集器
 
-​		<img src="C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201026132421371.png" alt="image-20201026132421371" style="zoom:80%;" />
+​		<img src="C:\Users\Administrator\Desktop\Learn Plan_A Java\java虚拟机 学习笔记\img\image-20201026132421371.png" alt="image-20201026132421371" style="zoom:80%;" />
 
 ​		ParNew收集器其实就是Serial收集器的多线程版本；
 
@@ -433,19 +433,19 @@ java.lang.ref.PhantomReference;//虚引用
 
 ### 	四、Serial Old收集器
 
-​	<img src="C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201026133020486.png" alt="image-20201026133020486" style="zoom:80%;" />
+​	<img src="C:\Users\Administrator\Desktop\Learn Plan_A Java\java虚拟机 学习笔记\img\image-20201026133020486.png" alt="image-20201026133020486" style="zoom:80%;" />
 
 ​	老年代单线程串行收集器；
 
 ### 	五、Parallel Old收集器
 
-​	<img src="C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201026133205446.png" alt="image-20201026133205446" style="zoom:80%;" />
+​	<img src="C:\Users\Administrator\Desktop\Learn Plan_A Java\java虚拟机 学习笔记\img\image-20201026133205446.png" alt="image-20201026133205446" style="zoom:80%;" />
 
 ​	老年代多线程并行收集器；
 
 ### 	六、CMS收集器
 
-​	<img src="C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201026133808224.png" alt="image-20201026133808224" style="zoom:80%;" />
+​	<img src="C:\Users\Administrator\Desktop\Learn Plan_A Java\java虚拟机 学习笔记\img\image-20201026133808224.png" alt="image-20201026133808224" style="zoom:80%;" />
 
 ​	一种以获取最短回收停顿时间为目标的收集器；希望系统停顿时间最短，用以给用户最好的体验；
 
@@ -467,7 +467,7 @@ java.lang.ref.PhantomReference;//虚引用
 
 ### 	七、G1收集器
 
-​	<img src="C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201026134719163.png" alt="image-20201026134719163" style="zoom:80%;" />
+​	<img src="C:\Users\Administrator\Desktop\Learn Plan_A Java\java虚拟机 学习笔记\img\image-20201026134719163.png" alt="image-20201026134719163" style="zoom:80%;" />
 
 ​	面向服务端应用的垃圾收集器；
 
@@ -542,7 +542,7 @@ jstat -<option> [-t] [-h<lines>] <vmid> [<interval> [<count>]]
 jstat -gcutil -t -h5 pid 1000 100 ##表示每1000毫秒收集一次jvm内存和gc信息，共收集100次，每隔5行显示一次标题，且标题行带时间戳
 ```
 
-![image-20201026141258242](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201026141258242.png)
+![image-20201026141258242](C:\Users\Administrator\Desktop\Learn Plan_A Java\java虚拟机 学习笔记\img\image-20201026141258242.png)
 
 ```shell
 jstat -gc pid ##垃圾回收统计
@@ -670,7 +670,7 @@ jstat -gcnew pid ##新生代垃圾回收统计
 jinfo [option] pid ##用来查询正在运行的java应用程序的扩展参数
 ```
 
-![image-20201026142722862](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201026142722862.png)
+![image-20201026142722862](C:\Users\Administrator\Desktop\Learn Plan_A Java\java虚拟机 学习笔记\img\image-20201026142722862.png)
 
 ### 	四、jmap：Java内存映像工具
 
@@ -702,7 +702,7 @@ jstack [option] vmid
 jstack -l pid ##除堆栈信息外，显示关于锁的附加信息
 ```
 
-![image-20201026143707762](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201026143707762.png)
+![image-20201026143707762](C:\Users\Administrator\Desktop\Learn Plan_A Java\java虚拟机 学习笔记\img\image-20201026143707762.png)
 
 ### 	七、HSDIS：JIT生成代码反汇编
 
