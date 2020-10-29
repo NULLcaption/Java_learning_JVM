@@ -23,11 +23,11 @@
 
 ### 	标志用于识别一些类或者接口层次的访问信息，包括：这个Class是类还是接口；是否定义为public类型；是否定义为abstract类型；如果是类的话，是否被声明为final等。
 
-​	<img src="C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201026154306270.png" alt="image-20201026154306270" style="zoom: 67%;" />
+​	<img src="C:\Users\Administrator\Desktop\Learn Plan_A Java\java虚拟机 学习笔记\img\image-20201026154306270.png" alt="image-20201026154306270" style="zoom: 67%;" />
 
 ### 	四、类索引、父类索引与接口索引集合
 
-#### 	类索引（this_class）和父类索引（super_class）都是一个u2类型的数据，而接口索引集合（interfaces）是一组u2类型的数据的集合，Class文件中由这三项数据来确定这个类的继承关系。
+#### 	类索引(this_class)和父类索引(super_class)都是一个u2类型的数据，而接口索引集合(interfaces)是一组u2类型的数据的集合，Class文件中由这三项数据来确定这个类的继承关系。
 
 ### 	五、字段表集合
 
@@ -35,7 +35,7 @@
 
 ### 	六、方法表集合
 
-#### 	Class文件存储格式中对方法的描述与对字段的描述几乎采用了完全一致的方式，方法表的结构如同字段表一样，依次包括了访问标志（access_flags）、名称索引（name_index）、描述符索引（descriptor_index）、属性表集（attributes）。
+#### 	Class文件存储格式中对方法的描述与对字段的描述几乎采用了完全一致的方式，方法表的结构如同字段表一样，依次包括了访问标志(access_flags)、名称索引(name_index)、描述符索引(descriptor_index)、属性表集(attributes)。
 
 ### 	七、属性表集合
 
@@ -45,19 +45,19 @@
 
 ### 一、类加载的时机
 
-#### 	类从被加载到虚拟机内存中开始，到卸载出内存为止，它的整个生命周期包括：加载（Loading）、验证（Verification）、准备（Preparation）、解析（Resolution）、初始化（Initialization）、使用（Using）和卸载（Unloading）7个阶段。
+#### 	类从被加载到虚拟机内存中开始，到卸载出内存为止，它的整个生命周期包括：加载(Loading)、验证(Verification)、准备(Preparation)、解析(Resolution)、初始化(Initialization)、使用(Using)和卸载(Unloading)7个阶段。
 
-<img src="C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201026160152200.png" alt="image-20201026160152200" style="zoom: 67%;" />
+<img src="C:\Users\Administrator\Desktop\Learn Plan_A Java\java虚拟机 学习笔记\img\image-20201026160152200.png" alt="image-20201026160152200" style="zoom: 67%;" />
 
 ### 二、类加载的过程
 
 ##### 	1、加载
 
-​	1）通过一个类的全限定名来获取定义此类的二进制字节流。
+​	1)通过一个类的全限定名来获取定义此类的二进制字节流。
 
-​	2）将这个字节流所代表的静态存储结构转化为方法区的运行时数据结构。
+​	2)将这个字节流所代表的静态存储结构转化为方法区的运行时数据结构。
 
-​	3）在内存中生成一个代表这个类的java.lang.Class对象，作为方法区这个类的各种数据的访问入口。
+​	3)在内存中生成一个代表这个类的java.lang.Class对象，作为方法区这个类的各种数据的访问入口。
 
 ### 	2、验证
 
@@ -75,7 +75,7 @@
 
 ##### 	5、初始化
 
-​	初始化阶段，才真正开始执行类中定义的Java程序代码（或者说是字节码）。
+​	初始化阶段，才真正开始执行类中定义的Java程序代码(或者说是字节码)。
 
 ### 	三、类加载器
 
@@ -87,17 +87,55 @@
 
 ​	Java虚拟机的角度来讲，只存在两种不同的类加载器：
 
-​	一种是启动类加载器（Bootstrap  ClassLoader），这个类加载器使用C++语言实现 [1] ，是虚拟机自身的一部分；
+​	一种是启动类加载器(Bootstrap  ClassLoader)，这个类加载器使用C++语言实现 [1] ，是虚拟机自身的一部分；
 
 ​	另一种就是所有其他的类加载器，这些类加载器都由Java语言实现，独立于虚拟机外部，并且全都继承自抽象类java.lang.ClassLoader。
 
-<img src="C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20201026161836386.png" alt="image-20201026161836386" style="zoom:67%;" />
+<img src="C:\Users\Administrator\Desktop\Learn Plan_A Java\java虚拟机 学习笔记\img\image-20201026161836386.png" alt="image-20201026161836386" style="zoom:67%;" />
 
-​	如图所示，双亲委派模型的工作过程是：如果一个类加载器收到了类加载的请求，它首先不会自己去尝试加载这个类，而是把这个请求委派给父类加载器去完成，每一个层次的类加载器都是如此，因此所有的加载请求最终都应该传送到顶层的启动类加载器中，只有当父加载器反馈自己无法完成这个加载请求（它的搜索范围中没有找到所需的类）时，子加载器才会尝试自己去加载。
+​	如图所示，双亲委派模型的工作过程是：如果一个类加载器收到了类加载的请求，它首先不会自己去尝试加载这个类，而是把这个请求委派给父类加载器去完成，每一个层次的类加载器都是如此，因此所有的加载请求最终都应该传送到顶层的启动类加载器中，只有当父加载器反馈自己无法完成这个加载请求(它的搜索范围中没有找到所需的类)时，子加载器才会尝试自己去加载。
+
+```java
+protected synchronized Class＜?＞loadClass(String name,boolean resolve)throws ClassNotFoundException{
+	//首先，检查请求的类是否已经被加载过了
+	Class c=findLoadedClass(name);
+    //若没有加载则调用父加载器的loadClass（）方法
+    if(c==null){
+        try{
+            if(parent！=null){
+                c=parent.loadClass(name,false);
+            }else{
+                c=findBootstrapClassOrNull(name);
+            }
+        }catch(ClassNotFoundException e){
+            //如果父类加载器抛出ClassNotFoundException
+            //说明父类加载器无法完成加载请求
+        }
+    	if(c==null){
+            //在父类加载器无法加载的时候
+            //再调用本身的findClass方法来进行类加载
+            c=findClass(name);
+    	}
+    }
+    if(resolve){
+    	resolveClass(c)；
+    }
+    return c；
+}
+```
 
 ## 虚拟机字节码执行引擎
 
+### 	执行引擎是Java虚拟机最核心的组成部分之一
 
+​	虚拟机的执行引擎则是由自己实现的，因此可以自行制定指令集与执行引擎的结构体系，并且能够执行那些不被硬件直接支持的指令集格式。
+
+### 	一、运行时栈帧结构
+
+​	栈帧（Stack Frame）是用于支持虚拟机进行方法调用和方法执行的数据结构，它是虚拟机运行时数据区中的虚拟机栈（Virtual Machine Stack）的栈元素。栈帧存储了方法的局部变量表、操作数栈、动态连接和方法返回地址等信息。每一个方法从调用开始至执行完成的过程，都对应着一个栈帧在虚拟机栈里面从入栈到出栈的过程。
+
+![image-20201028150925280](C:\Users\Administrator\Desktop\Learn Plan_A Java\java虚拟机 学习笔记\image-20201028150925280.png)
 
 ## 类加载及执行子系统的案例与实战
 
+​	tomcat加载模型
